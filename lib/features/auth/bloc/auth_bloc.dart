@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
@@ -6,8 +8,11 @@ part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(AuthInitial()) {
-    on<AuthEvent>((event, emit) {
-      // TODO: implement event handler
-    });
+    on<LoginEvent>(loginEvent);
+  }
+
+  FutureOr<void> loginEvent(LoginEvent event, Emitter<AuthState> emit) {
+    print(event.email);
+    print(event.password);
   }
 }

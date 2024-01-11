@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "250646997957",
+    "project_id": "omlaademoapp",
+    "storage_bucket": "omlaademoapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:250646997957:android:74e32cccae5f953e91f9ac",
+        "android_client_info": {
+          "package_name": "com.example.omla_demo_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8lMLdzY0NJRH27sKVdA11P248regdE2g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
