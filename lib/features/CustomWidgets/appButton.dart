@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 
 class AppButton extends StatelessWidget {
   const AppButton({
-    super.key,  required this.text, required this.onTap,
+    super.key,  required this.text, required this.onTap,  this.loading = false,
   });
 final String text;
 final VoidCallback onTap;
+final bool loading;
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -20,7 +21,7 @@ final VoidCallback onTap;
           ),
         ),
         child:  Center(
-            child: Text(
+            child: loading ? const CircularProgressIndicator(strokeWidth: 3,color: Colors.white,): Text(
           text,
           style: const TextStyle(
             color: Colors.white,
