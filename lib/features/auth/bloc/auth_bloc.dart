@@ -21,51 +21,56 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   FutureOr<void> loginEvent(LoginEvent event, Emitter<AuthState> emit) async{
+    
     emit(AuthLoadingState());
-    await auth
+    try {
+      await auth
         .signInWithEmailAndPassword(
       email: event.email.toString(),
       password: event.password.toString(),
     )
         .then((userCredential) {
       emit(AuthLoadingSucessState());
-      if (kDebugMode) {
-        print("Login Sucess");
-      }
-      // Navigator.push(
-      //     context, MaterialPageRoute(builder: (context) => const PostScreen()));
-    }).catchError((e) {
-      emit(AuthLoadingSucessState());
-      if (kDebugMode) {
-        print(e.toString());
-      }
+      
+     
     });
-    //emit(AuthLoadingSucessState());
-    // print(event.email);
-    // print(event.password);
+    } on FirebaseAuthException catch (e) {
+      var message = e.code;
+      
+      emit(AuthErrorState(errorMessage: message));
+      
+    }
+    
 
   }
 
-  FutureOr<void> signUpEvent(SignUpEvent event, Emitter<AuthState> emit) {
-    auth
+
+  FutureOr<void> signUpEvent(SignUpEvent event, Emitter<AuthState> emit) async{
+    emit(AuthLoadingState());
+    try {
+      await auth
         .createUserWithEmailAndPassword(
       email: event.email.toString(),
       password: event.password.toString(),
     )
         .then((userCredential) {
-     
-      print('Sign up sucess');
-    }).catchError((e) {
-      print("Sign up error${e.toString()}");
-      return e;
+     emit(AuthLoadingSucessState());
+      if (kDebugMode) {
+        print('Sign up sucess');
+      }
     });
+    } on FirebaseAuthException catch (e) {
+      var message = e.code;
+      
+      emit(AuthErrorState(errorMessage: message));
+      
+    }
   }
 
   
 
   FutureOr<void> signUpNavigateEvent(SignUpNavigateEvent event, Emitter<AuthState> emit) {
-    // emit(SignUpNavigateState());
-    print("SignUpNavigateState emitted");
+    
     emit(SignUpNavigateState());
   }
 
