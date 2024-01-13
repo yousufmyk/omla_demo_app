@@ -11,3 +11,8 @@ final class WebSocketPriceSucessState extends HomeActionState{
 
   WebSocketPriceSucessState({required this.price});
 }
+final class HomeErrorState extends HomeActionState{
+  final String? errorMessage;
+
+  HomeErrorState({required this.errorMessage});
+}
