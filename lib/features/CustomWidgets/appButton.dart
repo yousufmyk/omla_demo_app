@@ -2,18 +2,20 @@ import 'package:flutter/material.dart';
 
 class AppButton extends StatelessWidget {
   const AppButton({
-    super.key,  required this.text, required this.onTap,  this.loading = false,
+    super.key,  required this.text, required this.onTap,  this.loading = false, this.height, this.width,
   });
 final String text;
 final VoidCallback onTap;
 final bool loading;
+final double? height;
+final double? width;
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
       child: Container(
-        height: 50,
-        width: 170,
+        height: height ?? 50,
+        width: width ?? 170,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           gradient: const LinearGradient(

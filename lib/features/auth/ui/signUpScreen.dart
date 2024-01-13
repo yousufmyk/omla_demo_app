@@ -60,7 +60,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         } else if (state is AuthLoadingSucessState) {
           stopLoading();
           Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => const HomeScreen()));
+              MaterialPageRoute(builder: (context) =>  HomeScreen()));
         } else if (state is AuthErrorState) {
           Utils().errorMessage(state.errorMessage.toString(), context);
           stopLoading();
