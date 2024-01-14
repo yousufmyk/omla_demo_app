@@ -5,6 +5,7 @@ import 'package:omla_demo_app/features/CustomWidgets/appButton.dart';
 import 'package:omla_demo_app/features/CustomWidgets/homeTextField.dart';
 import 'package:omla_demo_app/features/CustomWidgets/showPriceWidget.dart';
 import 'package:omla_demo_app/features/home/bloc/home_bloc.dart';
+import 'package:omla_demo_app/features/price/ui/priceScreen.dart';
 import 'package:omla_demo_app/features/utils/utils.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -18,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController priceController = TextEditingController();
 
   final HomeBloc homeBloc = HomeBloc();
-
+  late dynamic tickerData;
   double? btcUsdtPrice = 0;
   String initialUserInput = "";
   bool isPositive = false;
@@ -59,11 +60,19 @@ class _HomeScreenState extends State<HomeScreen> {
       buildWhen: (previous, current) => current is! HomeActionState,
       listener: (context, state) {
         if (state is WebSocketPriceSucessState) {
+          var initialData = state.data['price'];
           setState(() {
-            btcUsdtPrice = state.price;
+            btcUsdtPrice = initialData;
+            tickerData = state.data;
           });
         } else if (state is HomeErrorState) {
           Utils().errorMessage(state.errorMessage.toString(), context);
+        } else if (state is NavigateToPriceScreenState) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      const PriceScreen(/*tickerData: tickerData,*/)));
         }
       },
       builder: (context, state) {
@@ -100,91 +109,96 @@ class _HomeScreenState extends State<HomeScreen> {
                 backgroundColor: const Color.fromARGB(255, 77, 44, 207),
                 body: Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 60),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Trade Highlight!",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 40),
-                          ),
-                          Icon(
-                            Icons.person_2_rounded,
-                            color: Colors.white,
-                            size: 40,
-                          )
-                        ],
-                      ),
-                      const Text(
-                        'Compare your prices here!',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 20),
-                      ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      Align(
-                        alignment: Alignment.center,
-                        child: HomeTextField(
-                          controller: priceController,
-                          hintText: 'Enter your price here',
-                          filledCollor: Colors.white,
-                          hintColor: Colors.grey,
-                          textColor: Colors.blueGrey,
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 60),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Trade Highlight!",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 40),
+                            ),
+                            Icon(
+                              Icons.person_2_rounded,
+                              color: Colors.white,
+                              size: 40,
+                            )
+                          ],
                         ),
-                      ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      Align(
-                        alignment: Alignment.center,
-                        child: AppButton(
-                          text: 'Compare',
-                          onTap: () async {
-                            conparePrice(btcUsdtPrice);
-                            showDialog(
-                              context: context,
-                              builder: (context) => PriceDailog(
-                                price: btcUsdtPrice,
-                                isPositive: isPositive,
-                                isnegative: isnegative,
-                              ),
-                            );
-                          },
-                          width: 180,
+                        const Text(
+                          'Compare your prices here!',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 20),
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Align(
+                          alignment: Alignment.center,
+                          child: HomeTextField(
+                            controller: priceController,
+                            hintText: 'Enter your price here',
+                            filledCollor: Colors.white,
+                            hintColor: Colors.grey,
+                            textColor: Colors.blueGrey,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Align(
+                          alignment: Alignment.center,
+                          child: AppButton(
+                            text: 'Compare',
+                            onTap: () async {
+                              conparePrice(btcUsdtPrice);
+                              showDialog(
+                                context: context,
+                                builder: (context) => PriceDailog(
+                                  price: btcUsdtPrice,
+                                  isPositive: isPositive,
+                                  isnegative: isnegative,
+                                ),
+                              );
+                            },
+                            width: 180,
+                            height: 50,
+                          ),
+                        ),
+                        const SizedBox(
                           height: 50,
                         ),
-                      ),
-                      const SizedBox(
-                        height: 50,
-                      ),
-                      Row(
-                        children: [
-                          const Text(
-                            "For Price Chart click here",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 20),
-                          ),
-                          IconButton(
-                              onPressed: () {},
-                              icon: const Icon(
-                                Icons.arrow_circle_right_rounded,
-                                color: Colors.white,
-                                size: 40,
-                              ))
-                        ],
-                      ),
-                    ],
+                        const Text(
+                          "Price Highlight!",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 40),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        const Text(
+                          'You can see here how price change over time',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 20),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const PriceScreen()
+                      ],
+                    ),
                   ),
                 ));
         }

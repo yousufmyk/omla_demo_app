@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class PriceDailog extends StatelessWidget {
   PriceDailog({
     super.key,
@@ -27,24 +28,21 @@ class PriceDailog extends StatelessWidget {
             children: [
               Text(
                 price.toString(),
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.w700,
                     color: Colors.black),
               ),
-              //Icon(Icons.arrow_circle_up_rounded,color: Colors.greenAccent,size: 60,),
               Visibility(
-                  // maintainState: true,
                   visible: isPositive,
-                  child: Icon(
+                  child: const Icon(
                     Icons.arrow_circle_up_rounded,
                     color: Colors.greenAccent,
                     size: 60,
                   )),
               Visibility(
-                  // maintainState: true,
                   visible: isnegative,
-                  child: Icon(
+                  child: const Icon(
                     Icons.arrow_circle_down_rounded,
                     color: Colors.redAccent,
                     size: 60,

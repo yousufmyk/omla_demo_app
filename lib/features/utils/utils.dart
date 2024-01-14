@@ -8,7 +8,7 @@ class Utils {
       behavior: SnackBarBehavior.floating,
       backgroundColor: Colors.transparent,
       content: AwesomeSnackbarContent(
-        title: 'On Snap!',
+        title: 'Oh, snap!',
         message: message,
         contentType: ContentType.failure,
       ),

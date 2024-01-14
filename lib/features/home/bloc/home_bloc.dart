@@ -14,6 +14,7 @@ part 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc() : super(HomeInitial()) {
     on<GenerateTokenAndComparePriceEvent>(generateTokenAndComparePriceEvent);
+    on<NavigateToPriceScreen>(navigateToPriceScreen);
   }
 
   FutureOr<void> generateTokenAndComparePriceEvent(
@@ -47,8 +48,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               .map((data) => jsonDecode(data))
               .where((message) => message.containsKey('data'))
               .map((message) => message['data'])
-              .map((data) => data['price'])
-              .map((price) => WebSocketPriceSucessState(price: price))
+              // .map((data) => data['price'])
+              .map((data) => WebSocketPriceSucessState(data: data))
               .forEach(emit)
               .whenComplete(() => () {
                     channel.sink.close();
@@ -60,5 +61,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     } catch (e) {
       emit(HomeErrorState(errorMessage: e.toString()));
     }
+  }
+
+  FutureOr<void> navigateToPriceScreen(
+      NavigateToPriceScreen event, Emitter<HomeState> emit) {
+    emit(NavigateToPriceScreenState());
   }
 }
